@@ -13,18 +13,19 @@ abstract class NetworkBoundRepository<RESULT, REQUEST> {
             emit(ApiResponse.loading())
 
 
-                val apiResponse = fetchFromRemote()
+            val apiResponse = fetchFromRemote()
 
-                val remoteResponse = apiResponse.body()
+            val remoteResponse = apiResponse.body()
 
-                if (apiResponse.isSuccessful && remoteResponse != null) {
-                   // ApiResponse.success<RESULT>(apiResponse)
+            if (apiResponse.isSuccessful && remoteResponse != null) {
 
-                } else {
-                    // Something went wrong! Emit Error state.
-                    emit(ApiResponse.error(apiResponse.message()))
-                }
+                emit(ApiResponse.success(remoteResponse as RESULT))
 
+
+            } else {
+                // Something went wrong! Emit Error state.
+                emit(ApiResponse.error(apiResponse.message()))
+            }
 
 
         } catch (exception: Exception) {
